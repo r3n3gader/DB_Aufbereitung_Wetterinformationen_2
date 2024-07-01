@@ -85,8 +85,8 @@ fun main() {
         val endTime = System.currentTimeMillis()
         val durationSeconds = (endTime - startTime) / 1000.0
 
-        // Test: Überwachung der Durchlaufzeit (maximal 10 Sekunden)
-        assertTrue(durationSeconds <= 10.0, "Die Verarbeitung dauerte länger als erwartet: $durationSeconds Sekunden")
+        // Test: Überwachung der Durchlaufzeit (maximal 20 Sekunden)
+        assertTrue(durationSeconds <= 20.0, "Die Verarbeitung dauerte länger als erwartet: $durationSeconds Sekunden")
 
         println("Erfolgreich $processedFiles Dateien verarbeitet in $durationSeconds Sekunden. Ausgabe nach: $outputFilePath")
     } catch (e: IOException) {

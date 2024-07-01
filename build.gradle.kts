@@ -14,6 +14,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation(kotlin("test"))
 }
 
 tasks.test {
