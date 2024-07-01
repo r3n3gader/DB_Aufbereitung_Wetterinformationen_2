@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.23"
     application
-    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "ch.heim-ag"
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("org.apache.commons:commons-csv:1.11.0")
     implementation(kotlin("test"))
 }
 
@@ -39,3 +39,21 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
+
+tasks.named<CreateStartScripts>("startScripts") {
+    dependsOn(tasks.named("shadowJar"))
+}
+
+tasks.named<CreateStartScripts>("startShadowScripts") {
+    dependsOn(tasks.named("jar"))
+}
+
+tasks.named<Zip>("distZip") {
+    dependsOn(tasks.named("shadowJar"))
+}
+
+tasks.named<Tar>("distTar") {
+    dependsOn(tasks.named("shadowJar"))
+}
+
+

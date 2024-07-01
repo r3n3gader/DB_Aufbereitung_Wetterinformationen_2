@@ -12,6 +12,7 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 
 fun main() {
+    val startTime = System.currentTimeMillis()
     val configFile = "config.properties"
     val properties = loadProperties(configFile)
     val inputFolder = properties.getProperty("input.folder")
@@ -38,8 +39,6 @@ fun main() {
         .withHeader()
         .withDelimiter(';')  // Setzt das Trennzeichen auf Semikolon
         .withSkipHeaderRecord(true)
-
-    val startTime = System.currentTimeMillis()
 
     try {
         val folder = File(inputFolder)
