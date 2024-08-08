@@ -55,5 +55,3 @@ tasks.named<Zip>("distZip") {
 tasks.named<Tar>("distTar") {
     dependsOn(tasks.named("shadowJar"))
 }
-
-

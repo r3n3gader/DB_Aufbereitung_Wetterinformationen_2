@@ -1,24 +1,28 @@
+package ch.heim.ag
+
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
-import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
-import java.io.Reader
-import java.io.IOException
+import java.io.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Properties
 import java.util.TreeMap
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
 fun main() {
     val startTime = System.currentTimeMillis()
-    val configFile = "config.properties"
+    val configFile = "config/config.properties"
     val properties = loadProperties(configFile)
     val inputFolder = properties.getProperty("input.folder")
     val outputFolderPath = properties.getProperty("output.folder")
     val outputFileName = "merged_output.csv"
     val outputFilePath = "$outputFolderPath$outputFileName"
+
+    // Initialisiere Telemetrie-Logging
+    val telemetryLog = FileWriter("telemetry.log", true)
+
+    logTelemetry(telemetryLog, "Program start")
 
     // Test: Config-Datei existiert
     assertTrue(File(configFile).exists(), "Config-Datei $configFile existiert nicht")
@@ -51,17 +55,18 @@ fun main() {
 
                 for (record in records) {
                     val id = record["station/location"]
-                    val datum = record["date"]
-                    val temperatur = record["tre200d0"]
+                    val date = record["date"]
+                    val temperature = record["tre200d0"]
                     stations.add(id)
 
-                    if (!dataMap.containsKey(datum)) {
-                        dataMap[datum] = mutableMapOf()
+                    if (!dataMap.containsKey(date)) {
+                        dataMap[date] = mutableMapOf()
                     }
-                    dataMap[datum]!![id] = temperatur
+                    dataMap[date]!![id] = temperature
                 }
 
                 processedFiles++
+                logTelemetry(telemetryLog, "Processed file: ${file.name}")
             }
         }
 
@@ -84,16 +89,23 @@ fun main() {
         val endTime = System.currentTimeMillis()
         val durationSeconds = (endTime - startTime) / 1000.0
 
+        logTelemetry(telemetryLog, "Processing completed in $durationSeconds seconds")
+
         // Test: Überwachung der Durchlaufzeit (maximal 20 Sekunden)
         assertTrue(durationSeconds <= 20.0, "Die Verarbeitung dauerte länger als erwartet: $durationSeconds Sekunden")
 
         println("Erfolgreich $processedFiles Dateien verarbeitet in $durationSeconds Sekunden. Ausgabe nach: $outputFilePath")
     } catch (e: IOException) {
         e.printStackTrace()
+        logTelemetry(telemetryLog, "IOException: ${e.message}")
         fail("Fehler beim Lesen/Schreiben von Dateien: ${e.message}")
     } catch (e: IllegalArgumentException) {
         e.printStackTrace()
+        logTelemetry(telemetryLog, "IllegalArgumentException: ${e.message}")
         fail("Ungültige Argumente beim Parsen der CSV-Datei: ${e.message}")
+    } finally {
+        logTelemetry(telemetryLog, "Program end")
+        telemetryLog.close()
     }
 }
 
@@ -101,4 +113,10 @@ fun loadProperties(filename: String): Properties {
     val properties = Properties()
     properties.load(FileReader(filename))
     return properties
+}
+
+// Funktion zur Erfassung von Telemetriedaten
+fun logTelemetry(writer: FileWriter, message: String) {
+    val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+    writer.write("[$timestamp] $message\n")
 }
