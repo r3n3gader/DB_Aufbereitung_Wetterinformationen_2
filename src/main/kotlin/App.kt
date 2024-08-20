@@ -1,9 +1,10 @@
+import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.util.Properties
 
 fun main() {
     // Erstelle TelemetryLogger und ErrorHandler
-    val telemetryLogger = TelemetryLogger("telemetry.log")
+    val telemetryLogger = TelemetryLogger("telemetry.log", StandardCharsets.UTF_8)
     val errorHandler = ErrorHandler(telemetryLogger)
 
     // Lade und validiere die Konfiguration
@@ -26,11 +27,11 @@ fun main() {
 
     // Überprüfe, ob alle benötigten Pfade vorhanden sind
     if (inputFolderPath.isNullOrBlank() || outputFolderPath.isNullOrBlank() || outputFileName.isNullOrBlank()) {
-        val missingFields = listOf(
+        val missingFields = listOfNotNull(
             if (inputFolderPath.isNullOrBlank()) "input.folder" else null,
             if (outputFolderPath.isNullOrBlank()) "output.folder" else null,
             if (outputFileName.isNullOrBlank()) "output.file" else null
-        ).filterNotNull().joinToString(", ")
+        ).joinToString(", ")
         val errorMessage = "Fehlende oder leere Konfigurationswerte: $missingFields"
         telemetryLogger.log(errorMessage)
         errorHandler.handleException(IllegalArgumentException(errorMessage))

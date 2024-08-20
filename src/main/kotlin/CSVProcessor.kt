@@ -47,9 +47,9 @@ class CSVProcessor(
                 val records: Iterable<CSVRecord> = csvFormat.parse(reader)
 
                 for (record in records) {
-                    val id = record["station/location"] ?: throw IllegalArgumentException("Missing required header 'station/location'")
-                    val date = record["date"] ?: throw IllegalArgumentException("Missing required header 'date'")
-                    val temperature = record["tre200d0"] ?: throw IllegalArgumentException("Missing required header 'tre200d0'")
+                    val id = record["station/location"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'station/location'")
+                    val date = record["date"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'date'")
+                    val temperature = record["tre200d0"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'tre200d0'")
 
                     // Überprüfe das Dezimaltrennzeichen
                     if (temperature.contains(",")) {
@@ -76,7 +76,7 @@ class CSVProcessor(
 
             FileWriter(outputFilePath).use { writer ->
                 val outputCsvFormat = CSVFormat.Builder.create()
-                    .setHeader("date", *stations.toTypedArray())
+                    .setHeader("datum", *stations.toTypedArray())
                     .setDelimiter(';')
                     .build()
 

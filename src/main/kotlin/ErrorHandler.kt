@@ -4,10 +4,16 @@ import java.io.IOException
 class ErrorHandler(private val telemetryLogger: TelemetryLogger) {
     fun handleException(e: Exception) {
         when (e) {
+            is FileNotFoundException -> handleFileNotFoundException(e)
             is IOException -> handleIOException(e)
             is IllegalArgumentException -> handleIllegalArgumentException(e)
             else -> handleGenericException(e)
         }
+    }
+
+    private fun handleFileNotFoundException(e: FileNotFoundException) {
+        e.printStackTrace()
+        telemetryLogger.log("FileNotFoundException: ${e.message}")
     }
 
     fun handleIOException(e: IOException) {
@@ -24,10 +30,4 @@ class ErrorHandler(private val telemetryLogger: TelemetryLogger) {
         e.printStackTrace()
         telemetryLogger.log("Exception: ${e.message}")
     }
-
-    private fun handleFileNotFoundException(e: FileNotFoundException) {
-        e.printStackTrace()
-        telemetryLogger.log("FileNotFoundException: ${e.message}")
-    }
-
 }

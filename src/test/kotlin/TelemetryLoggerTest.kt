@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import java.nio.charset.StandardCharsets
 
 class TelemetryLoggerTest {
 
@@ -8,7 +9,7 @@ class TelemetryLoggerTest {
     fun `log should write message to file`() {
         // Arrange
         val filename = "test_telemetry.log"
-        val telemetryLogger = TelemetryLogger(filename)
+        val telemetryLogger = TelemetryLogger(filename, StandardCharsets.UTF_8)
 
         // Act
         telemetryLogger.log("Test message")
@@ -27,7 +28,7 @@ class TelemetryLoggerTest {
     fun `close should close the file writer`() {
         // Arrange
         val filename = "test_telemetry_close.log"
-        val telemetryLogger = TelemetryLogger(filename)
+        val telemetryLogger = TelemetryLogger(filename, StandardCharsets.UTF_8)
 
         // Act
         telemetryLogger.close()
