@@ -13,7 +13,7 @@ class CSVProcessorTest {
     @BeforeEach
     fun setup() {
         // Initialisiere den TelemetryLogger und ErrorHandler vor jedem Test
-        telemetryLogger = TelemetryLogger("build/reports/tests/testConfigLoader/telemetry_tests.log", StandardCharsets.UTF_8)
+        telemetryLogger = TelemetryLogger("build/reports/tests/telemetry_tests.log", StandardCharsets.UTF_8)
         errorHandler = ErrorHandler(telemetryLogger)
     }
 
