@@ -1,13 +1,12 @@
+package ch.heim.ag
+
 import org.apache.commons.csv.CSVFormat
-import org.apache.commons.csv.CSVPrinter
 import org.apache.commons.csv.CSVRecord
 import java.io.*
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.stream.Collectors
+import java.util.Properties
+import java.util.TreeMap
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
@@ -33,52 +32,50 @@ fun main() {
     assertTrue(File(outputFolderPath).exists(), "Output-Folder $outputFolderPath existiert nicht")
 
     // Test: Dateien im Input-Folder im richtigen Format vorhanden
-    val csvFiles = Files.list(Paths.get(inputFolder))
-        .filter { Files.isRegularFile(it) && it.toString().endsWith(".csv") }
-        .collect(Collectors.toList()) // Umwandeln in eine Liste
-
-    assertTrue(csvFiles.isNotEmpty(), "Keine CSV-Dateien im Input-Folder $inputFolder gefunden")
+    val csvFiles = File(inputFolder).listFiles { _, name -> name.endsWith(".csv") }
+    assertTrue(csvFiles?.isNotEmpty() ?: false, "Keine CSV-Dateien im Input-Folder $inputFolder gefunden")
 
     val dataMap = TreeMap<String, MutableMap<String, String>>() // TreeMap für sortierte Datumsangaben
     val stations = mutableSetOf<String>()
     var processedFiles = 0
 
-    val csvFormat = CSVFormat.Builder.create()
-        .setHeader()   // Header wird automatisch gesetzt, wenn die CSV-Datei Header enthält
-        .setDelimiter(';')
-        .setSkipHeaderRecord(true)
-        .build()
+    val csvFormat = CSVFormat.RFC4180
+        .withHeader()
+        .withDelimiter(';')  // Setzt das Trennzeichen auf Semikolon
+        .withSkipHeaderRecord(true)
 
     try {
-        for (csvFilePath in csvFiles) {
-            val file = csvFilePath.toFile() // Konvertiert Path zu File
-            val reader: Reader = FileReader(file)
-            val records: Iterable<CSVRecord> = csvFormat.parse(reader)
+        val folder = File(inputFolder)
+        val csvFiles = folder.listFiles { _, name -> name.endsWith(".csv") }
 
-            for (record in records) {
-                val id = record["station/location"]
-                val date = record["date"]
-                val temperature = record["tre200d0"]
-                stations.add(id)
+        if (csvFiles != null) {
+            for (file in csvFiles) {
+                val reader: Reader = FileReader(file)
+                val records: Iterable<CSVRecord> = csvFormat.parse(reader)
 
-                if (!dataMap.containsKey(date)) {
-                    dataMap[date] = mutableMapOf()
+                for (record in records) {
+                    val id = record["station/location"]
+                    val date = record["date"]
+                    val temperature = record["tre200d0"]
+                    stations.add(id)
+
+                    if (!dataMap.containsKey(date)) {
+                        dataMap[date] = mutableMapOf()
+                    }
+                    dataMap[date]!![id] = temperature
                 }
-                dataMap[date]!![id] = temperature
-            }
 
-            processedFiles++
-            logTelemetry(telemetryLog, "Processed file: ${file.name}")
+                processedFiles++
+                logTelemetry(telemetryLog, "Processed file: ${file.name}")
+            }
         }
 
         FileWriter(outputFilePath).use { writer ->
-            val outputCsvFormat = CSVFormat.Builder.create()
-                .setHeader("date", *stations.toTypedArray())
-                .setDelimiter(';')
-                .build()
+            val outputCsvFormat = CSVFormat.RFC4180
+                .withHeader("date", *stations.toTypedArray())
+                .withDelimiter(';')
 
-            // Erstellen des CSVPrinter-Objekts
-            val csvPrinter = CSVPrinter(writer, outputCsvFormat)
+            val csvPrinter = outputCsvFormat.print(writer)
             for ((datum, stationData) in dataMap) {
                 val row = mutableListOf(datum)
                 for (station in stations) {
@@ -88,6 +85,7 @@ fun main() {
             }
             csvPrinter.flush()
         }
+
         val endTime = System.currentTimeMillis()
         val durationSeconds = (endTime - startTime) / 1000.0
 

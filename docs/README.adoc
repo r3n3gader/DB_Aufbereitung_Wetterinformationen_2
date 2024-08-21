@@ -1,0 +1,86 @@
+= App DB Aufbereitung Wetterinformationen_2
+Renato Huber
+:doctype: Anleitung
+:icons: font
+
+:toc:
+:toclevels: 2
+
+== Gradle-Tasks
+
+*test* +
+Native Test-Funktion von Gradle. Führt alle im Projekt enthaltenen Unit-Tests durch.
+
+*testSummary* +
+Ergänzend zu 'test' wird bei 'testSummary' eine Zusammenfassung aller Tests inkl. Links zu den HTML-Auswertungen erstellt.
+
+== Filenamen
+Folgende Testcases werden durchgeführt:
+
+*Rohdaten* +
+Der Name der Rohdaten spielt keine Rolle. Wichtig ist nur, dass die Struktur innerhalb der .csv-Datei immer nach folgendem Schema aufgebaut ist:
+
+[cols="a,a,a,a,a,a,a,a,a,a,a,a", options="header"]
+|===
+| station/location | date     | gre000d0 | hto000d0 | nto000d0 | prestad0 | rre150d0 | sre000d0 | tre200d0 | tre200dn | tre200dx | ure200d0
+
+| ALT              | 20240101 | 35       | 0        | 58       | 963.5    | 0        | 94       | 2.8      | -1.2     | 6.3      | 87.9
+|===
+
+*Hinweis*: in der App werden nur Tages-Durchschnitsstemperaturen verarbeitet (tre200d0).
+
+*Herkunft der Rohdaten* +
+Die Links zu den Rohdaten befinden sich unter: +
+https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/liste-download-nbcn-d.csv
+
+In dem verlinkten .csv befinden sich folgende Informationen:
+
+[cols="20,10,25,25", options="header"]
+|===
+| Station | station/location | URL Previous years (verified data) | URL Current year
+
+| Altdorf | ALT | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ALT_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ALT_current.csv
+| Andermatt | ANT | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ANT_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ANT_current.csv
+| Basel / Binningen | BAS | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_BAS_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_BAS_current.csv
+| Bern / Zollikofen | BER | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_BER_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_BER_current.csv
+| La Chaux-de-Fonds | CDF | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CDF_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CDF_current.csv
+| Château-d'Oex | CHD | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CHD_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CHD_current.csv
+| Chaumont | CHM | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CHM_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_CHM_current.csv
+| Davos | DAV | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_DAV_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_DAV_current.csv
+| Elm | ELM | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ELM_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ELM_current.csv
+| Engelberg | ENG | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ENG_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_ENG_current.csv
+| Grächen | GRC | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GRC_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GRC_current.csv
+| Grimsel Hospiz | GRH | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GRH_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GRH_current.csv
+| Col du Grand St-Bernard | GSB | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GSB_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GSB_current.csv
+| Genève / Cointrin | GVE | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GVE_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_GVE_current.csv
+| Jungfraujoch | JUN | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_JUN_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_JUN_current.csv
+| Lugano | LUG | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_LUG_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_LUG_current.csv
+| Luzern | LUZ | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_LUZ_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_LUZ_current.csv
+| Meiringen | MER | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_MER_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_MER_current.csv
+| Neuchâtel | NEU | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_NEU_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_NEU_current.csv
+| Locarno / Monti | OTL | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_OTL_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_OTL_current.csv
+| Payerne | PAY | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_PAY_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_PAY_current.csv
+| Bad Ragaz | RAG | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_RAG_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_RAG_current.csv
+| Säntis | SAE | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SAE_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SAE_current.csv
+| Samedan | SAM | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SAM_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SAM_current.csv
+| S. Bernardino | SBE | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SBE_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SBE_current.csv
+| Segl-Maria | SIA | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SIA_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SIA_current.csv
+| Sion | SIO | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SIO_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SIO_current.csv
+| Zürich / Fluntern | SMA | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SMA_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_SMA_current.csv
+| St. Gallen | STG | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_STG_previous.csv | https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/nbcn-daily_STG_current.csv
+|===
+
+
+*Verzeichnis-Pfade* +
+Standardmässig werden folgende Pfade erwartet: +
+*\resources\Rohdaten* -> für die .csv-Daten aus obigen Links +
+*\resources\Verarbeitet* -> für das gemergte wetterdaten.csv-File, welches per Web in die DB geladen werden kann.
+
+*Hinweis*: Duplikate werden automatisch herausgefiltert. Idealerweise zuerst in der Web-App nachschauen, was der letzte Datenbank-
+Eintrag ist und mindestens diese Files von den Links oben ziehen und mit der App mergen und anschliessend hochladen. Für ein Aktualisieren
+der Datenbank in der Web-App ist eine Neuanmeldung erforderlich.
+
+
+
+
+
