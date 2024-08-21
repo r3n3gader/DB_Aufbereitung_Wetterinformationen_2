@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DB_Vorbereitung_Wetterdaten_2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DB_Vorbereitung_Wetterdaten_2_jar</output-path>
+    <root id="archive" name="DB_Vorbereitung_Wetterdaten_2.jar">
+      <element id="module-output" name="DB_Vorbereitung_Wetterdaten_2.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-inline/5.0.0/3d1dffee9a8a1998ec782383ca2f818848f2d5f1/mockito-inline-5.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.8.2/4c21029217adf07e4c0d0c5e192b6bf610c94bdc/junit-jupiter-api-5.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.12.22/9c4127080df12304336ca90c2ef3f8b7d72915c1/byte-buddy-agent-1.12.22.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.9.23/dbaadea1f5e68f790d242a91a38355a83ec38747/kotlin-stdlib-1.9.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.8.2/c598b4328d2f397194d11df3b1648d68d7d990e3/junit-jupiter-engine-5.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.12.22/984e536b4f3fb668b21f15b90c1e8704292d4bdd/byte-buddy-1.12.22.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.2/5a817b1e63f1217e5c586090c45e681281f097ad/junit-jupiter-5.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-csv/1.11.0/8f2dc805097da534612128b7cdf491a5a76752bf/commons-csv-1.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/3.3/1049c09f1de4331e8193e579448d0916d75b7631/objenesis-3.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test/1.9.23/c0bfb6d288568761c098f08b74d078175a9aa40b/kotlin-test-1.9.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.8.2/ddeafe92fc263f895bfb73ffeca7fd56e23c2cce/junit-jupiter-params-5.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.16.1/377d592e740dc77124e0901291dbfaa6810a200e/commons-io-2.16.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.16.1/47bd4d333fba53406f6c6c51884ddbca435c8862/commons-codec-1.16.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.0.0/6e3f9065903066e9d638428c9e1333fa476256fb/mockito-core-5.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.8.2/b737de09f19864bd136805c84df7999a142fec29/junit-platform-engine-1.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-junit5/1.9.23/2e91005f3f1e9ccf31ebe498dce63199963ff1f1/kotlin-test-junit5-1.9.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.8.2/32c8b8617c1342376fd5af2053da6410d8866861/junit-platform-commons-1.8.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

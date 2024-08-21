@@ -14,11 +14,9 @@ Native Test-Funktion von Gradle. Führt alle im Projekt enthaltenen Unit-Tests d
 *testSummary* +
 Ergänzend zu 'test' wird bei 'testSummary' eine Zusammenfassung aller Tests inkl. Links zu den HTML-Auswertungen erstellt.
 
-== Filenamen
-Folgende Testcases werden durchgeführt:
+== Rohdaten
 
-*Rohdaten* +
-Der Name der Rohdaten spielt keine Rolle. Wichtig ist nur, dass die Struktur innerhalb der .csv-Datei immer nach folgendem Schema aufgebaut ist:
+Die Datei-Namen der Rohdaten spielen keine Rolle. Wichtig ist nur, dass die Struktur innerhalb der .csv-Datei immer nach folgendem Schema aufgebaut ist:
 
 [cols="a,a,a,a,a,a,a,a,a,a,a,a", options="header"]
 |===
@@ -33,7 +31,7 @@ Der Name der Rohdaten spielt keine Rolle. Wichtig ist nur, dass die Struktur inn
 Die Links zu den Rohdaten befinden sich unter: +
 https://data.geo.admin.ch/ch.meteoschweiz.klima/nbcn-tageswerte/liste-download-nbcn-d.csv
 
-In dem verlinkten .csv befinden sich folgende Informationen:
+In dem verlinkten .csv befinden sich folgende Informationen (nachfolgende Tabelle nicht abschliessend):
 
 [cols="20,10,25,25", options="header"]
 |===
@@ -77,8 +75,45 @@ Standardmässig werden folgende Pfade erwartet: +
 *\resources\Verarbeitet* -> für das gemergte wetterdaten.csv-File, welches per Web in die DB geladen werden kann.
 
 *Hinweis*: Duplikate werden automatisch herausgefiltert. Idealerweise zuerst in der Web-App nachschauen, was der letzte Datenbank-
-Eintrag ist und mindestens diese Files von den Links oben ziehen und mit der App mergen und anschliessend hochladen. Für ein Aktualisieren
+Eintrag ist und mindestens diese fehlenden Files von den Links oben ziehen und mit der App mergen und anschliessend hochladen. Für ein Aktualisieren
 der Datenbank in der Web-App ist eine Neuanmeldung erforderlich.
+
+*App auf Windows-PC ohne IDE lauffähig machen* +
+1. Artifakt hinzufügen unter -> Projektstruktur -> Artifacts -> '+' -> JAR -> ... from Modules with Dependencies... -> Main Class (angeben) -> extract to the target JAR -> OK +
+2. Fat-JAR erstellen -> ./gradlew clean build +
+3. Projektverzeichnis erstellen (Struktur siehe unten) und Daten aus IDE-Projekt kopieren:
+4. Batchfile schreiben (siehe Beispiel unten)
+5. Java Runtime Environment Version 11 installieren
+6. Rohdaten ablegen
+7. Aufbereitung_Wetterdaten.bat ausführen
+8. wetterdaten.csv entnehmen und per Web in Datenbank hochladen
+9. Fertig.
+
+*Verzeichnisstruktur* +
+
+* config
+    - config.properties
+* lib
+    - DB_Vorbereitung_Wetterdaten_2-1.0-SNAPSHOT.jar
+* resources
+    - Rohdaten
+        . nbcn-daily_ALT_current.csv
+        . ....
+    - Verarbeitet
+* Aufbereitung_Wetterdaten.bat
+(diese Datei selber schreiben anhand nachfolgender Anleitung)
+
+*Batchfile schreiben* +
+@echo off +
+java -cp lib/DB_Vorbereitung_Wetterdaten_2-1.0-SNAPSHOT.jar AppKt +
+pause
+
+Hinweis: das JAR kann wie ein ZIP entpackt werden. Die App.kt muss direkt im Hauptverzeichnis liegen. Ist dies nicht der Fall, so muss im Batchfile vor AppKt ein Pfad eingegeben werden, ansonsten gibt es eine Fehlermeldung.
+
+
+
+
+
 
 
 
