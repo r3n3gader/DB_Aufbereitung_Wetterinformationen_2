@@ -5,7 +5,10 @@ import java.util.Properties
 fun main() {
     // Erstelle TelemetryLogger und ErrorHandler
     val telemetryLogger = TelemetryLogger("telemetry.log", StandardCharsets.UTF_8)
+    telemetryLogger.log("Logger erfolgreich erstellt")
+
     val errorHandler = ErrorHandler(telemetryLogger)
+    telemetryLogger.log("ErrorHandler erfolgreich erstellt")
 
     // Lade und validiere die Konfiguration
     val configLoader = ConfigLoader("config/config.properties")
@@ -39,8 +42,11 @@ fun main() {
         return
     }
 
+    telemetryLogger.log("Verzeichnisse gefunden")
+
     // Initialisiere den CSVProcessor mit den geladenen Pfaden
     val csvProcessor = CSVProcessor(inputFolderPath, outputFilePath, telemetryLogger, errorHandler)
+    telemetryLogger.log("csvProcessor gestartet")
 
     // Starte die Verarbeitung
     telemetryLogger.log("Konfiguration erfolgreich. Verarbeitung läuft.")

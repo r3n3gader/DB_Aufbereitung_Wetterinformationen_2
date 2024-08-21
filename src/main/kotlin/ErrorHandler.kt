@@ -2,6 +2,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 class ErrorHandler(private val telemetryLogger: TelemetryLogger) {
+
     fun handleException(e: Exception) {
         when (e) {
             is FileNotFoundException -> handleFileNotFoundException(e)

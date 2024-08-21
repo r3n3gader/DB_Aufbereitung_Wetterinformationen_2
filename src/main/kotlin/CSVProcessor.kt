@@ -47,13 +47,13 @@ class CSVProcessor(
                 val records: Iterable<CSVRecord> = csvFormat.parse(reader)
 
                 for (record in records) {
-                    val id = record["station/location"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'station/location'")
-                    val date = record["date"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'date'")
-                    val temperature = record["tre200d0"]?.lowercase() ?: throw IllegalArgumentException("Missing required header 'tre200d0'")
+                    val id = record["station/location"]?.lowercase() ?: throw IllegalArgumentException("Header fehlt: 'station/location'")
+                    val date = record["date"]?.lowercase() ?: throw IllegalArgumentException("Header fehlt: 'date'")
+                    val temperature = record["tre200d0"]?.lowercase() ?: throw IllegalArgumentException("Header fehlt: 'tre200d0'")
 
                     // Überprüfe das Dezimaltrennzeichen
                     if (temperature.contains(",")) {
-                        throw IllegalArgumentException("Temperature value should use '.' as decimal separator but found: $temperature")
+                        throw IOException("Temperaturwert sollte '.' als Dezimaltrennzeichen verwenden, jedoch: $temperature")
                     }
 
                     stations.add(id)
@@ -65,7 +65,7 @@ class CSVProcessor(
                 }
 
                 processedFiles++
-                telemetryLogger.log("Processed file: ${file.name}")
+                telemetryLogger.log("Verarbeitet: ${file.name}")
             }
 
             // Sicherstellen, dass der Output-Ordner existiert
@@ -91,6 +91,11 @@ class CSVProcessor(
                 csvPrinter.flush()
             }
 
+            // Überprüfen, ob die Ausgabedatei erstellt wurde
+            if (!Files.exists(Paths.get(outputFilePath))) {
+                throw IOException("Ausgabedatei wurde nicht erstellt.")
+            }
+
             val endTime = System.currentTimeMillis()
             val durationSeconds = (endTime - startTime) / 1000.0
 
@@ -98,6 +103,7 @@ class CSVProcessor(
             println("Erfolgreich $processedFiles Dateien verarbeitet in $durationSeconds Sekunden. Ausgabe nach: $outputFilePath")
         } catch (e: Exception) {
             errorHandler.handleException(e)
+            throw e
         }
     }
 }

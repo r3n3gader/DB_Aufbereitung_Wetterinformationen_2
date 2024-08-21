@@ -14,16 +14,16 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation("org.apache.commons:commons-csv:1.11.0")
-    implementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.mockito:mockito-core:5.0.0")
     testImplementation("org.mockito:mockito-inline:5.0.0")
-
 }
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 kotlin {
@@ -59,4 +59,52 @@ tasks.named<Zip>("distZip") {
 
 tasks.named<Tar>("distTar") {
     dependsOn(tasks.named("shadowJar"))
+}
+
+// Definiere eine neue Aufgabe "testSummary", die den "test" Task ausführt
+tasks.register("testSummary") {
+    description = "Run all test tasks and display a summary"
+    group = "verification"
+    dependsOn("test")
+    finalizedBy("summary")
+}
+
+// Aufgabe zur Zusammenfassung der Testergebnisse
+tasks.register("summary") {
+    doLast {
+        println("*******************************")
+        println("*   Zusammenfassung der Tests  *")
+        println("*******************************")
+
+        // Detaillierte Testergebnisse anzeigen, basierend auf den generierten XML-Berichten
+        val resultDirs = listOf(
+            "build/test-results/test"
+        )
+
+        resultDirs.forEach { dir ->
+            val resultDirFile = file(dir)
+            if (resultDirFile.exists()) {
+                resultDirFile.walkTopDown()
+                    .filter { it.extension == "xml" }
+                    .forEach { file ->
+                        println("Test Resultat Datei: ${file.name}")
+                    }
+            } else {
+                println("Keine Test-Ergebnisse gefunden im Verzeichnis: $dir")
+            }
+        }
+
+        // Pfade zu den HTML-Berichten anzeigen und anklickbare Links erstellen
+        val reportDirs = listOf(
+            "build/reports/tests/testCSVProcessor",
+            "build/reports/tests/testConfigLoader"
+        )
+
+        reportDirs.forEach { dir ->
+            val indexHtmlPath = project.file("$dir/index.html").toURI().toString().replace("file:/", "file:///")
+            println("Ergebnisse unter: $indexHtmlPath")
+        }
+
+        println("*******************************")
+    }
 }
