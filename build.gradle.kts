@@ -96,15 +96,20 @@ tasks.register("summary") {
 
         // Pfade zu den HTML-Berichten anzeigen und anklickbare Links erstellen
         val reportDirs = listOf(
-            "build/reports/tests/testCSVProcessor",
-            "build/reports/tests/testConfigLoader"
+            "testCSVProcessor",
+            "testConfigLoader"
         )
 
         reportDirs.forEach { dir ->
-            val indexHtmlPath = project.file("$dir/index.html").toURI().toString().replace("file:/", "file:///")
-            println("Ergebnisse unter: $indexHtmlPath")
+            // Erzeuge den relativen Pfad
+            val relativePath = "build/reports/tests/$dir/index.html"
+
+            // Gib den relativen Pfad direkt aus
+            println("Ergebnisse unter: $relativePath")
         }
+
 
         println("*******************************")
     }
 }
+

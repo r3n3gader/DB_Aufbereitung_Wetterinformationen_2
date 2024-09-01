@@ -1,0 +1,68 @@
+@startuml
+
+class Main {
+}
+
+class TelemetryLogger {
+    - logFilePath: String
+    - charset: Charset
+    + log(message: String): void
+    + close(): void
+}
+
+class ErrorHandler {
+    - telemetryLogger: TelemetryLogger
+    + handleException(e: Exception): void
+}
+
+class ConfigLoader {
+    - configFile: String
+    + loadConfig(): Properties
+    - validateProperties(properties: Properties): void
+}
+
+class CSVProcessor {
+    - inputFolderPath: String
+    - outputFilePath: String
+    - telemetryLogger: TelemetryLogger
+    - errorHandler: ErrorHandler
+    + process(): void
+}
+
+class CSVProcessorTest {
+    - telemetryLogger: TelemetryLogger
+    - errorHandler: ErrorHandler
+    + setup(): void
+    + teardown(): void
+    + processInvalidData(): void
+    + processMissingData(): void
+    + processValidData(): void
+}
+
+class ConfigLoaderTest {
+    - telemetryLogFile: String
+    - telemetryLogger: TelemetryLogger
+    + setUp(): void
+    + tearDown(): void
+    + testLoadingInvalidConfigProperties(): void
+    + testMissingRequiredKeysInConfigProperties(): void
+    + testLoadingValidConfigProperties(): void
+}
+
+Main --> TelemetryLogger : "telemetryLogger"
+Main --> ErrorHandler : "errorHandler"
+Main --> ConfigLoader : "configLoader"
+Main --> CSVProcessor : "csvProcessor"
+
+TelemetryLogger --> Charset : "charset"
+ErrorHandler --> TelemetryLogger : "telemetryLogger"
+CSVProcessor --> TelemetryLogger : "telemetryLogger"
+CSVProcessor --> ErrorHandler : "errorHandler"
+CSVProcessorTest --> CSVProcessor : "tests"
+CSVProcessorTest --> TelemetryLogger : "uses"
+CSVProcessorTest --> ErrorHandler : "uses"
+
+ConfigLoaderTest --> ConfigLoader : "tests"
+ConfigLoaderTest --> TelemetryLogger : "uses"
+
+@enduml
